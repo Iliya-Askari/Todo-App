@@ -3,19 +3,16 @@ from django.views.generic import ListView , UpdateView, DeleteView,CreateView , 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Task
 # Create your views here.
-class TaskList(ListView):
+class TaskList(LoginRequiredMixin, ListView):
     template_name = 'index.html'
     model = Task
-class TaskCreate(CreateView):
-    template_name = 'index.html'
-    model = Task
-class TaskUpdate(UpdateView):
+class TaskCreate(LoginRequiredMixin, CreateView):
     template_name = 'index.html'
     model = Task
 
-class TaskComplete(View):
+class TaskComplete(LoginRequiredMixin, View):
     template_name = 'index.html'
     model = Task
-class TaskDeleteView(DeleteView):
+class TaskDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'index.html'
     model = Task
