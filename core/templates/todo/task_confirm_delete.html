@@ -47,9 +47,9 @@
 </head>
 <body>
     <div class="delete-container">
-        <form method="post">
-            <input type="hidden" name="csrfmiddlewaretoken" value="pfmrki86u6Jugl9zGQNhwVChXmsx9HVycdXmrCUQ7SmzE5kx56gqqYiZFCVc6xQv">
-            <p>آیا مطمئن هستید که می‌خواهید "dcwcwcw" را حذف کنید؟</p>
+        <form method="post" action="{% url 'todo:delete_task' pk=object.id %}">
+            {% csrf_token %}
+            <p>آیا مطمئن هستید که می‌خواهید "{{ object.title }}" را حذف کنید؟</p>
             <input type="submit" value="تأیید">
         </form>
     </div>
