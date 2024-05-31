@@ -26,7 +26,7 @@
         <div class="modal-content rounded-5 shadow">
           <div class="modal-header p-5 pb-4 border-bottom-0">
             <!-- <h5 class="modal-title">Modal title</h5> -->
-            <h2 class="fw-bold mb-0">Todo App</h2>
+            <h2 class="fw-bold mb-0">دست نویس</h2>
             <a type="button" class="btn-close" href="{% url 'accounts:logout' %}"></a>
           </div>
     
@@ -35,9 +35,9 @@
             <form class="pt-3" method="POST" action="{% url 'todo:create_task' %}">
               {% csrf_token %}
               <div class="input-group mb-3">
-                <input type="text" class="form-control rounded-4" name="title" placeholder="Enter task title"
+                <input type="text" class="form-control rounded-4" name="title" placeholder="نوشتن تسک جدید"
                   aria-label="Recipient's username" aria-describedby="button-addon2">
-                <button class="btn btn-primary" type="submit">Add</button>
+                <button class="btn btn-primary" type="submit">اضافه کردن</button>
               </div>
     
               <hr class="my-4">
@@ -56,7 +56,8 @@
                   <span class="visually-hidden">Toggle Dropdown</span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
-                  <li><a class="dropdown-item" href="{% url 'todo:complete_task' pk=task.id %}">Done</a></li>
+                  <li><a class="dropdown-item" href="{% url 'todo:complete_task' pk=task.id %}">انجام شد</a></li>
+                  <li><a class="dropdown-item" href="{% url 'todo:edit_task' pk=task.id %}">ویرایش</a></li>
                 </ul>
               </div>
           

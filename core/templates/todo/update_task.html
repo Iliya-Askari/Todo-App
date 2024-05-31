@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <title></title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <style>
+        body {
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(to bottom, #e6e6e6 0%, #ffffff 100%);
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"></script>
+
+</body>
+
+
+
+<div class="modal modal-signin position-static d-block  py-5" tabindex="-1" role="dialog" id="modalSignin">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content rounded-5 shadow">
+            <div class="modal-header p-5 pb-4 border-bottom-0">
+                <!-- <h5 class="modal-title">Modal title</h5> -->
+                <h2 class="fw-bold mb-0">ویرایش تسک</h2>
+                <a type="button" class="btn-close" href="{% url 'todo:task_list' %}"></a>
+            </div>
+
+            <div class="modal-body p-5 pt-0">
+                <form method="POST" action="">
+                    <input type="hidden" name="csrfmiddlewaretoken"
+                        value="JwTwuVVYWdWkWby7C10PqscSKnGvZeNiM9WsfuXTGeGX88ZoSOobSaqNq2M6eVF3">
+                    <div class="form-floating mb-3">
+                        <p>
+                            <label for="id_title">تسک جدید:</label>
+                            <input type="text" name="title" value="fverve" maxlength="255" required="" id="id_title">
+                        </p>
+                    </div>
+                    <button class="w-100 mb-2 btn btn-lg rounded-4 btn-primary" type="submit">عوض کردن</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="header-bar">
+    <a href="{% url 'todo:task_list' %}">&#8592; Back</a>
+</div>
+
+<div class="card-body">
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input class="button" type="submit" value="Submit">
+    </form>
+</div>
+
+</html>

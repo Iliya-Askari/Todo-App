@@ -1,5 +1,57 @@
-<form method="post">{% csrf_token %}
-    <p>Are you sure you want to delete "{{ object }}"?</p>
-    {{ form }}
-    <input type="submit" value="Confirm">
-</form>
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تأیید حذف</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .delete-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        .delete-container p {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .delete-container input[type="submit"] {
+            background-color: #d9534f;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+        .delete-container input[type="submit"]:hover {
+            background-color: #c9302c;
+        }
+    </style>
+</head>
+<body>
+    <div class="delete-container">
+        <form method="post">
+            <input type="hidden" name="csrfmiddlewaretoken" value="pfmrki86u6Jugl9zGQNhwVChXmsx9HVycdXmrCUQ7SmzE5kx56gqqYiZFCVc6xQv">
+            <p>آیا مطمئن هستید که می‌خواهید "dcwcwcw" را حذف کنید؟</p>
+            <input type="submit" value="تأیید">
+        </form>
+    </div>
+</body>
+</html>
