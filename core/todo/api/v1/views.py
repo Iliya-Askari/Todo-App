@@ -7,6 +7,9 @@ from rest_framework.filters import  OrderingFilter
 from .pagination import LargeResultsSetPagination
 
 class TaskViewSet(viewsets.ModelViewSet):
+    '''
+    In this class, permissions and filters are implemented to improve performance
+    '''
     permission_classes = [IsAuthenticatedOrReadOnly]
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
