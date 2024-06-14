@@ -5,12 +5,13 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import  OrderingFilter
 from .pagination import LargeResultsSetPagination
+from .permissions import IsUserOrReadOnly
 
 class TaskViewSet(viewsets.ModelViewSet):
     '''
     In this class, permissions and filters are implemented to improve performance
     '''
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly , IsUserOrReadOnly]
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     filter_backends = [DjangoFilterBackend , OrderingFilter]
