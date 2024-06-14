@@ -8,9 +8,10 @@ class TaskSerializer(serializers.ModelSerializer):
     '''
     # Display user based on username
     user = serializers.SlugRelatedField(many=False, slug_field='username', read_only=True)
+    absolute_url = serializers.SerializerMethodField()
     class Meta:
         model = Task
-        fields = ('id', 'user', 'title', 'complete','created_date')
+        fields = ('id', 'user', 'title', 'complete','created_date','absolute_url')
 
     def get_fields(self):
         '''
@@ -28,3 +29,11 @@ class TaskSerializer(serializers.ModelSerializer):
         '''
         validated_data['user'] = self.context['request'].user
         return super().create(validated_data)
+    
+    def get_absolute_url(self,obj):
+        '''
+        Getting URL details of posts
+        '''
+        request = self.context.get('request')
+        return request.build_absolute_uri(obj.id)
+    
