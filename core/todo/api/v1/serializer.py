@@ -37,3 +37,12 @@ class TaskSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         return request.build_absolute_uri(obj.id)
     
+    def to_representation(self, instance):
+        '''
+        Setting a condition not to display the post details URL in the post details URL
+        '''
+        request = self.context.get('request')
+        rep = super().to_representation(instance)
+        if request.parser_context.get('kwargs').get('pk'):
+            rep.pop('absolute_url', None)
+        return rep
