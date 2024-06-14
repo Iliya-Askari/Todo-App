@@ -1,3 +1,6 @@
 django==4.2.10
 python-decouple
 pillow==10.2.0
+djangorestframework
+markdown
+django-filter 
