@@ -4,3 +4,4 @@ pillow==10.2.0
 djangorestframework
 markdown
 django-filter 
+drf-yasg[validation]
