@@ -1,7 +1,17 @@
+# genral moudles
 django==4.2.10
 python-decouple
 pillow==10.2.0
 djangorestframework
-markdown
-django-filter 
+
+# third party modules
+markdown       
+django-filter  
 drf-yasg[validation]
+djangorestframework-simplejwt
+coreapi
+coreschema
+# deployment modules
+
+# email third party modules
+django-mail-templated
