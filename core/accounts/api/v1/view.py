@@ -28,5 +28,5 @@ class CustomLoginTokenApiView(TokenObtainPairView):
         return Response({
             'token': token.key,
             'user_id': user.pk,
-            'email': user.username
+            'email': user.email
         })

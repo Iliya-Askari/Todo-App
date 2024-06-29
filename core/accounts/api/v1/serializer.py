@@ -11,7 +11,7 @@ class RegestrationsSerializer(serializers.ModelSerializer):
     password_2 = serializers.CharField(max_length=255 , write_only=True)
     class Meta:
         model = User
-        fields = ['username', 'password', 'password_2']
+        fields = ['email', 'password', 'password_2']
 
     def validate(self, attrs):
         if attrs.get('password_2') != attrs.get('password'):
@@ -27,12 +27,12 @@ class RegestrationsSerializer(serializers.ModelSerializer):
         return User.objects.create_user(**validated_data)
     
 class CustomLoginTokenSerializer(serializers.Serializer):
-    username = serializers.CharField(label=_("Username"),write_only=True)
+    email = serializers.CharField(label=_("email"),write_only=True)
     password = serializers.CharField(label=_("Password"),style={'input_type': 'password'},trim_whitespace=False,write_only=True)
     token = serializers.CharField(label=_("Token"),read_only=True)
 
     def validate(self, attrs):
-        username = attrs.get('username')
+        username = attrs.get('email')
         password = attrs.get('password')
         request = self.context.get('request')
         if username and password :
@@ -40,7 +40,7 @@ class CustomLoginTokenSerializer(serializers.Serializer):
             if not user:
                 raise serializers.ValidationError(_('Invalid credentials'))
         else :
-            raise serializers.ValidationError(_('Username and password required'))
+            raise serializers.ValidationError(_('email and password required'))
 
         attrs['user'] = user
         return attrs

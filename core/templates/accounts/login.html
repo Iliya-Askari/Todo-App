@@ -75,7 +75,7 @@
         <form method="post" action="{% url 'accounts:login' %}">
             {% csrf_token %}
             <p>
-                <label for="id_username">نام کاربری:</label>
+                <label for="id_username">ایمیل :</label>
                 <input type="text" name="username" id="id_username" required maxlength="150" autofocus autocapitalize="none" autocomplete="username">
             </p>
             <p>
