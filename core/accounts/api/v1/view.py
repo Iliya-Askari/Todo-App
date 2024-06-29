@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import generics , views , permissions
 from rest_framework.response import Response
 from .serializer import *
 from rest_framework import status
@@ -17,7 +17,7 @@ class RegestrationsApiView(generics.GenericAPIView):
         else:
             return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
         
-class CustomLoginTokenApiView(TokenObtainPairView):
+class CustomCreateTokenApiView(TokenObtainPairView):
     serializer_class = CustomLoginTokenSerializer
 
     def post(self, request, *args, **kwargs):
@@ -30,3 +30,10 @@ class CustomLoginTokenApiView(TokenObtainPairView):
             'user_id': user.pk,
             'email': user.email
         })
+    
+class CustomDiscardTokenApiView(views.APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self,request):
+        request.user.auth_token.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

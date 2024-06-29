@@ -72,16 +72,10 @@
 <body>
     <div class="login-container">
         <h2>ورود به حساب کاربری</h2>
-        <form method="post" action="{% url 'accounts:login' %}">
+        <form method="post" action="{% url 'accounts:login' %}?next={{ request.GET.next }}">
             {% csrf_token %}
-            <p>
-                <label for="id_username">ایمیل :</label>
-                <input type="text" name="username" id="id_username" required maxlength="150" autofocus autocapitalize="none" autocomplete="username">
-            </p>
-            <p>
-                <label for="id_password">رمز عبور:</label>
-                <input type="password" name="password" id="id_password" required autocomplete="current-password">
-            </p>
+            {{ form.as_p }}
+            <input type="hidden" name="next" value="{{ request.GET.next }}">
             <p>
                 <input type="submit" value="ورود">
             </p>
