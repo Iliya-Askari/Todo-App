@@ -26,7 +26,7 @@ class RegestrationsSerializer(serializers.ModelSerializer):
         validated_data.pop('password_2', None)
         return User.objects.create_user(**validated_data)
     
-class CustomLoginTokenSerializer(serializers.Serializer):
+class CustomCreateTokenSerializer(serializers.Serializer):
     email = serializers.CharField(label=_("email"),write_only=True)
     password = serializers.CharField(label=_("Password"),style={'input_type': 'password'},trim_whitespace=False,write_only=True)
     token = serializers.CharField(label=_("Token"),read_only=True)
@@ -44,4 +44,11 @@ class CustomLoginTokenSerializer(serializers.Serializer):
 
         attrs['user'] = user
         return attrs
-    
+
+class CustomCreateJwtTokenSerializer(TokenObtainPairSerializer):
+    def validate(self, attrs: Dict[str, Any]) -> Dict[str, str]:
+        validated_data = super().validate(attrs)
+        if not self.user.is_verified:
+                raise serializers.ValidationError({'details':'user is not verified'})
+        validated_data['email'] = self.user.email
+        return validated_data
