@@ -11,8 +11,8 @@ class RegestrationsApiView(generics.GenericAPIView):
         serializer = RegestrationsSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
-            username = serializer.validated_data['username']
-            data= {'username': username}
+            email = serializer.validated_data['email']
+            data= {'email': email}
             return Response(data , status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
