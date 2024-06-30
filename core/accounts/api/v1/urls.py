@@ -9,5 +9,7 @@ urlpatterns =[
     path('jwt/verify/',TokenVerifyView.as_view(),name='verify-jwt-token'),
     path('jwt/refresh/',TokenRefreshView.as_view(),name='refresh-jwt-token'),
     path('profile/',view.ProfileApiView.as_view(),name='profile-detail'),
-    path('changepassword/',view.ChangePasswordApiView.as_view(),name='change-password')
+    path('changepassword/',view.ChangePasswordApiView.as_view(),name='change-password'),
+    path('activations/confirm/<str:token>',view.ActivationsConfirmApiView.as_view(),name='activations'),
+    path('activations/recend/',view.ActivationsRecendApiView.as_view(),name='activation-recend'),
 ]

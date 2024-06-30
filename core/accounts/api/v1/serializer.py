@@ -60,6 +60,21 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ['id','email','first_name', 'last_name','image', 'description']
         read_only_fields = ['id']
 
+class ActivsionRecendSerializer(serializers.Serializer):
+    email = serializers.EmailField(required=True)
+
+    def validate(self, attrs):
+        email = attrs.get('email')
+
+        try:
+            user_obj = User.objects.get(email=email)
+        except User.DoesNotExist:
+            raise serializers.ValidationError({'detail':'user dos not exist'})
+        if user_obj.is_verified:
+            raise serializers.ValidationError({'detail':'user is already and verified activated'}) 
+        attrs['user'] = user_obj
+        return super().validate(attrs)
+    
 class ChangePasswordSerializer(serializers.Serializer):
     old_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)
@@ -79,3 +94,4 @@ class ChangePasswordSerializer(serializers.Serializer):
             raise serializers.ValidationError({'new_password': list(e.messages)})
         
         return super().validate(attrs)
+    
