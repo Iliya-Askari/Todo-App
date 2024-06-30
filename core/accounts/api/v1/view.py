@@ -52,3 +52,28 @@ class ProfileApiView(generics.RetrieveUpdateAPIView):
         queryset = self.get_queryset()
         obj = get_object_or_404(queryset, user=self.request.user)
         return obj
+    
+class ChangePasswordApiView(generics.GenericAPIView):
+    model = get_user_model
+    permission_classes = [permissions.IsAuthenticated,]
+    serializer_class = ChangePasswordSerializer
+    def get_object(self):
+        obj = self.request.user
+        return obj
+    
+    def put(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            if not self.object.check_password(serializer.data.get('old_password')):
+                return Response({'old_password': ['Wrong  password']}, status=status.HTTP_400_BAD_REQUEST)
+            self.object.set_password(serializer.data.get('new_password'))
+            self.object.save()
+            respone = {
+                'status': 'success',
+                'code': status.HTTP_200_OK,
+                'message' : 'password updated successfully',
+                'data': []
+            }
+            return Response(respone)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

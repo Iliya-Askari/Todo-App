@@ -59,3 +59,23 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = ['id','email','first_name', 'last_name','image', 'description']
         read_only_fields = ['id']
+
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+    confirm_password = serializers.CharField(required=True)
+
+    def validate(self, attrs):
+        '''
+        this is a function to validate the password and password2 field
+        '''
+        if attrs.get('new_password') != attrs.get('confirm_password'):
+            raise serializers.ValidationError({'detail': 'passwords do not match'})
+        
+        try:
+            validate_password(attrs.get('new_password'))
+
+        except serializers.ValidationError as e:
+            raise serializers.ValidationError({'new_password': list(e.messages)})
+        
+        return super().validate(attrs)
