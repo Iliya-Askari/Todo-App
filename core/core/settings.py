@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
     'mail_templated',
+    'django_rest_passwordreset'
 ]
 
 MIDDLEWARE = [

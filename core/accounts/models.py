@@ -3,8 +3,10 @@ from django.utils.translation import gettext_lazy as _
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import (BaseUserManager, AbstractBaseUser, PermissionsMixin, Group, Permission)
-
-
+from django.core.mail import send_mail
+from django_rest_passwordreset.signals import reset_password_token_created
+from django.conf import settings
+from accounts.api.utils import EmailThread
 class UserManager(BaseUserManager):
     """
     Custom user model manager where email is the unique identifiers
@@ -93,3 +95,11 @@ class Profile(models.Model):
 def save_profile(sender,created,instance,**kwargs):
     if created:
         Profile.objects.create(user=instance)
+
+@receiver(reset_password_token_created)
+def reset_password_token(sender, instance, reset_password_token, **kwargs):
+    subject = 'Reset your password'
+    message = f'''Click the link below to reset your password: {reset_password_token.key}
+    http://127.0.0.1:8000/accounts/api/v1/api/password_reset/confirm/'''
+    recipient_list = [reset_password_token.user.email]
+    EmailThread(subject, message, recipient_list).start()

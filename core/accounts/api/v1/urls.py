@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path , include
 from . import view
 from rest_framework_simplejwt.views import TokenRefreshView , TokenVerifyView
 urlpatterns =[
@@ -12,4 +12,5 @@ urlpatterns =[
     path('changepassword/',view.ChangePasswordApiView.as_view(),name='change-password'),
     path('activations/confirm/<str:token>',view.ActivationsConfirmApiView.as_view(),name='activations'),
     path('activations/recend/',view.ActivationsRecendApiView.as_view(),name='activation-recend'),
+    path('api/password_reset/', include('django_rest_passwordreset.urls', namespace='password_reset')),
 ]
