@@ -1,5 +1,6 @@
 from rest_framework import permissions
 
+
 class IsUserOrReadOnly(permissions.BasePermission):
     """
     Object-level permission to only allow user of an object to edit it.

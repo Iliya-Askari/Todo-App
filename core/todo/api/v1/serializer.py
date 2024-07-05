@@ -3,46 +3,57 @@ from todo.models import Task
 
 
 class TaskSerializer(serializers.ModelSerializer):
-    '''
+    """
     show in the Task
-    '''
+    """
+
     # Display user based on username
-    user = serializers.SlugRelatedField(many=False, slug_field='email', read_only=True)
+    user = serializers.SlugRelatedField(
+        many=False, slug_field="email", read_only=True
+    )
     absolute_url = serializers.SerializerMethodField()
+
     class Meta:
         model = Task
-        fields = ('id', 'user', 'title', 'complete','created_date','absolute_url')
+        fields = (
+            "id",
+            "user",
+            "title",
+            "complete",
+            "created_date",
+            "absolute_url",
+        )
 
     def get_fields(self):
-        '''
+        """
         The complete field only works for updating the task
-        '''
+        """
         fields = super().get_fields()
-        request = self.context.get('request', None)
+        request = self.context.get("request", None)
         if request and not self.instance:
-            fields.pop('complete', None)
+            fields.pop("complete", None)
         return fields
-    
+
     def create(self, validated_data):
-        '''
+        """
         The user field is filled automatically, provided that the user is logged in
-        '''
-        validated_data['user'] = self.context['request'].user
+        """
+        validated_data["user"] = self.context["request"].user
         return super().create(validated_data)
-    
-    def get_absolute_url(self,obj):
-        '''
+
+    def get_absolute_url(self, obj):
+        """
         Getting URL details of posts
-        '''
-        request = self.context.get('request')
+        """
+        request = self.context.get("request")
         return request.build_absolute_uri(obj.id)
-    
+
     def to_representation(self, instance):
-        '''
+        """
         Setting a condition not to display the post details URL in the post details URL
-        '''
-        request = self.context.get('request')
+        """
+        request = self.context.get("request")
         rep = super().to_representation(instance)
-        if request.parser_context.get('kwargs').get('pk'):
-            rep.pop('absolute_url', None)
+        if request.parser_context.get("kwargs").get("pk"):
+            rep.pop("absolute_url", None)
         return rep
