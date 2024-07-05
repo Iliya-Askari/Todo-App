@@ -5,6 +5,8 @@ from django.urls import reverse_lazy
 from django.contrib.auth import login
 from django.shortcuts import redirect
 
+from .forms import SignUpForm
+
 # Create your views here.
 
 
@@ -20,7 +22,7 @@ class CustomLoginView(LoginView):
     
 class RegisterPage(FormView):
     template_name = "accounts/register.html"
-    form_class = UserCreationForm
+    form_class = SignUpForm
     redirect_authenticated_user = True
     success_url = reverse_lazy("todo:task_list")
 

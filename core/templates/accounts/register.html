@@ -25,6 +25,7 @@
         .register-container h2 {
             margin-bottom: 20px;
             color: #333;
+            text-align: center;
         }
         .register-container label {
             display: block;
@@ -35,23 +36,26 @@
         .register-container input[type="password"] {
             width: 100%;
             padding: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
         }
         .register-container .helptext {
             display: block;
-            margin-top: -15px;
-            margin-bottom: 15px;
+            margin-top: -10px;
+            margin-bottom: 10px;
             color: #777;
             font-size: 12px;
         }
-        .register-container ul {
-            margin-bottom: 20px;
-            padding-left: 20px;
-            color: #777;
-            font-size: 12px;
+        .register-container .errorlist {
+            color: red;
+            margin-bottom: 10px;
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .register-container .errorlist li {
+            margin-bottom: 5px;
         }
         .register-container button[type="submit"] {
             background-color: #4CAF50;
@@ -76,13 +80,34 @@
         <h2>ثبت نام</h2>
         <form method="post" action="{% url 'accounts:register' %}">
             {% csrf_token %}
+            {% if form.non_field_errors %}
+                <ul class="errorlist">
+                    {% for error in form.non_field_errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
             <p>
-                <label for="id_username">نام کاربری:</label>
-                <input type="text" name="username" maxlength="150" autocapitalize="none" autocomplete="username" autofocus required id="id_username">
+                <label for="id_email">نام کاربری:</label>
+                {% if form.email.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.email.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <input type="text" name="email"  maxlength="150" autocapitalize="none" autocomplete="email" autofocus required id="id_email">
                 <span class="helptext">الزامی. ۱۵۰ کاراکتر یا کمتر. فقط حروف، اعداد و @/./+/-/_ مجاز هستند.</span>
             </p>
             <p>
                 <label for="id_password1">رمز عبور:</label>
+                {% if form.password1.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.password1.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
                 <input type="password" name="password1" autocomplete="new-password" required id="id_password1">
             </p>
             <ul>
@@ -93,6 +118,13 @@
             </ul>
             <p>
                 <label for="id_password2">تأیید رمز عبور:</label>
+                {% if form.password2.errors %}
+                    <ul class="errorlist">
+                        {% for error in form.password2.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
                 <input type="password" name="password2" autocomplete="new-password" required id="id_password2">
                 <span class="helptext">همان رمز عبور قبلی را برای تأیید وارد کنید.</span>
             </p>
