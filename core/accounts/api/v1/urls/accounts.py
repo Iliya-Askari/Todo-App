@@ -2,6 +2,7 @@ from django.urls import path, include
 from accounts.api.v1 import view
 from rest_framework_simplejwt.views import TokenRefreshView, TokenVerifyView
 
+app_name = 'accounts-urls'
 urlpatterns = [
     path(
         "registrations/",
