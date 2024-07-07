@@ -63,3 +63,4 @@ typing_extensions==4.12.2
 uritemplate==4.1.1
 urllib3==2.2.2
 zipp==3.19.2
+django_rest_passwordreset
