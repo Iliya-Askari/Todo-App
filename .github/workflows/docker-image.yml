@@ -1,4 +1,5 @@
 name: Django Project Test
+
 on:
   push:
     branches: [ "main" ]
@@ -6,14 +7,19 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
-    - name: SetUp Docker-Compose
-      run: docker-compose up -d
-    - name: Run Test
-      run: docker-compose exec backend sh -c "pytest ."      
+    
+    - name: Set Up Docker Compose
+      run: docker-compose -f docker-compose.yml up -d
+    
+    - name: Wait for Services to be Ready
+      run: |
+        echo "Waiting for services to be ready..."
+        sleep 10  # Adjust this as needed
+
+    - name: Run Tests
+      run: docker-compose -f docker-compose.yml exec -T backend sh -c "pytest ."
