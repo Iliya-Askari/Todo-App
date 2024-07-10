@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.password_validation import validate_password
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.utils.translation import gettext_lazy as _
-from accounts.models import Profile
+
 
 User = get_user_model()
 
@@ -68,20 +68,7 @@ class CustomCreateJwtTokenSerializer(TokenObtainPairSerializer):
         return validated_data
 
 
-class ProfileSerializer(serializers.ModelSerializer):
-    email = serializers.CharField(source="user.email", read_only=True)
 
-    class Meta:
-        model = Profile
-        fields = [
-            "id",
-            "email",
-            "first_name",
-            "last_name",
-            "image",
-            "description",
-        ]
-        read_only_fields = ["id"]
 
 
 class ActivsionRecendSerializer(serializers.Serializer):

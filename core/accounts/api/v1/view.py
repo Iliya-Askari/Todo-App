@@ -4,7 +4,7 @@ from .serializer import *
 from rest_framework import status
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.authtoken.models import Token
-from accounts.models import Profile
+
 from django.shortcuts import get_object_or_404
 from mail_templated import EmailMessage
 from accounts.api.utils import EmailThread
@@ -58,15 +58,6 @@ class CustomCreateJwtTokenApiView(TokenObtainPairView):
     serializer_class = CustomCreateJwtTokenSerializer
 
 
-class ProfileApiView(generics.RetrieveUpdateAPIView):
-    serializer_class = ProfileSerializer
-    queryset = Profile.objects.all()
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get_object(self):
-        queryset = self.get_queryset()
-        obj = get_object_or_404(queryset, user=self.request.user)
-        return obj
 
 
 class ChangePasswordApiView(generics.GenericAPIView):
