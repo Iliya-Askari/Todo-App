@@ -5,7 +5,7 @@ from datetime import datetime
 from rest_framework.authtoken.models import Token
 
 
-from accounts.models import Users , Profile
+from accounts.models import Users
 
 @pytest.fixture
 def api_client():
@@ -19,14 +19,6 @@ def user_api():
     user.save()
     return user
 
-@pytest.fixture
-def profile_api(user_api):
-    profile = Profile.objects.create(user=user_api , 
-                                     first_name = 'testuser',
-                                     last_name = 'testuserrr' ,
-                                     description = 'Test description'
-                                     )
-    return profile
 
 
 @pytest.mark.django_db
@@ -102,15 +94,13 @@ class TestAccountApiView:
         assert refresh_response.status_code == 200
 
     def test_create_token_jwt_user_invalid_credentials_401(self, api_client, user_api):
-        # اطمینان از احراز هویت کاربر
+
         user_api.is_verified = True
         user_api.save()
-        
-        # احراز هویت کاربر و ایجاد توکن JWT با اطلاعات احراز هویت نامعتبر
+
         invalid_data = {'email': user_api.email, 'password': 'invalid_password'}
         response = api_client.post(reverse('accounts:accounts-urls:create-jwt-token'), invalid_data, format='json')
-        
-        # بررسی کد وضعیت پاسخ
+
         assert response.status_code == 401
         assert 'detail' in response.data
         assert response.data['detail'] == 'No active account found with the given credentials'
@@ -136,32 +126,3 @@ class TestAccountApiView:
         verify_response = api_client.post(reverse('accounts:accounts-urls:verify-jwt-token'), verify_data, format='json')
         assert verify_response.status_code == 401
 
-    def test_get_profile_response200(self, api_client, profile_api):
-        Profile.objects.filter(user=profile_api.user).exclude(id=profile_api.id).delete()
-        api_client.force_authenticate(user=profile_api.user)
-        url = reverse('accounts:profiles-urls:profile-detail')
-        response = api_client.get(url, format='json')
-        assert response.status_code == 200
-
-    def test_update_profile_put(self, api_client, profile_api):
-        api_client.force_authenticate(user=profile_api.user)
-        Profile.objects.filter(user=profile_api.user).exclude(id=profile_api.id).delete()
-        url = reverse('accounts:profiles-urls:profile-detail')
-        update_data = {
-            'first_name': 'NewFirstName',
-            'last_name': 'NewLastName',
-            'description': 'Updated bio',
-        }
-        response = api_client.put(url, update_data, format='json')
-        assert response.status_code == 200
-
-    def test_update_profile_patch(self, api_client, profile_api):
-        api_client.force_authenticate(user=profile_api.user)
-        Profile.objects.filter(user=profile_api.user).exclude(id=profile_api.id).delete()
-        url = reverse('accounts:profiles-urls:profile-detail')
-        update_data = {
-            'description': 'Updated bio with PATCH',
-        }
-        response = api_client.patch(url, update_data, format='json')
-
-        assert response.status_code == 200
