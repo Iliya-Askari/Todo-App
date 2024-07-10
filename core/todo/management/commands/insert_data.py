@@ -13,8 +13,10 @@ category_list = [
     "Health",
     "Science",
     "World",
-    "Travel"
+    "Travel",
 ]
+
+
 class Command(BaseCommand):
     help = "Inserting dummy data"
 
@@ -25,12 +27,14 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         users = []
         for _ in range(5):
-            user = Users.objects.create_user(email=self.fake.email(), password='Test@123456')
+            user = Users.objects.create_user(
+                email=self.fake.email(), password="Test@123456"
+            )
             users.append(user)
-        
+
         for _ in range(5):
             Task.objects.create(
-                user = random.choice(users),
-                title = self.fake.paragraph(nb_sentences=1),
-                complete = self.fake.boolean(),
+                user=random.choice(users),
+                title=self.fake.paragraph(nb_sentences=1),
+                complete=self.fake.boolean(),
             )

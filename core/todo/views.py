@@ -44,7 +44,7 @@ class TaskComplete(LoginRequiredMixin, View):
         return redirect(self.success_url)
 
 
-class TaskEdittView(LoginRequiredMixin,UpdateView):
+class TaskEdittView(LoginRequiredMixin, UpdateView):
     model = Task
     success_url = reverse_lazy("todo:task_list")
     form_class = UpdateTask

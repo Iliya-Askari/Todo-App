@@ -8,9 +8,7 @@ class TaskSerializer(serializers.ModelSerializer):
     """
 
     # Display user based on username
-    user = serializers.SlugRelatedField(
-        many=False, slug_field="email", read_only=True
-    )
+    user = serializers.SlugRelatedField(many=False, slug_field="email", read_only=True)
     absolute_url = serializers.SerializerMethodField()
 
     class Meta:

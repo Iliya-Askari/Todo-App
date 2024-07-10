@@ -45,9 +45,7 @@ class CustomCreateTokenSerializer(serializers.Serializer):
         password = attrs.get("password")
         request = self.context.get("request")
         if username and password:
-            user = authenticate(
-                request=request, username=username, password=password
-            )
+            user = authenticate(request=request, username=username, password=password)
             if not user:
                 raise serializers.ValidationError(_("Invalid credentials"))
         else:
@@ -61,14 +59,9 @@ class CustomCreateJwtTokenSerializer(TokenObtainPairSerializer):
     def validate(self, attrs: Dict[str, Any]) -> Dict[str, str]:
         validated_data = super().validate(attrs)
         if not self.user.is_verified:
-            raise serializers.ValidationError(
-                {"details": "user is not verified"}
-            )
+            raise serializers.ValidationError({"details": "user is not verified"})
         validated_data["email"] = self.user.email
         return validated_data
-
-
-
 
 
 class ActivsionRecendSerializer(serializers.Serializer):
@@ -99,16 +92,12 @@ class ChangePasswordSerializer(serializers.Serializer):
         this is a function to validate the password and password2 field
         """
         if attrs.get("new_password") != attrs.get("confirm_password"):
-            raise serializers.ValidationError(
-                {"detail": "passwords do not match"}
-            )
+            raise serializers.ValidationError({"detail": "passwords do not match"})
 
         try:
             validate_password(attrs.get("new_password"))
 
         except serializers.ValidationError as e:
-            raise serializers.ValidationError(
-                {"new_password": list(e.messages)}
-            )
+            raise serializers.ValidationError({"new_password": list(e.messages)})
 
         return super().validate(attrs)
