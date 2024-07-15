@@ -18,6 +18,14 @@ services:
     environment:
       - SECRET_KEY=test
       - DEBUG=True
+  worker-celery:
+    build: .
+    volumes:
+      - ./core:/app
+    command: bash -c "celery -A core worker -l INFO & celery -A core beat -l INFO"
+    depends_on:
+      - backend
+      - redis
   smtp4dev:
     image: rnwood/smtp4dev:v3
     restart: always
