@@ -5,6 +5,7 @@ app_name = "todo"
 
 urlpatterns = [
     path("", TaskList.as_view(), name="task_list"),
+    path('delete-task/',deleted_task,name='delete-task'),
     path("create/", TaskCreate.as_view(), name="create_task"),
     path("complete/<int:pk>/", TaskComplete.as_view(), name="complete_task"),
     path("edit/<int:pk>/", TaskEdittView.as_view(), name="edit_task"),

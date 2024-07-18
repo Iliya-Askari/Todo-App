@@ -1,5 +1,12 @@
 version: "3.9"
 services:
+  redis:
+    image: redis
+    container_name: rediss
+    ports:
+     - "6379:6379"
+    command:  redis-server --save 60 1 --loglevel warning 
+    restart: always
   backend:
     build: .
     container_name: todo
@@ -11,6 +18,14 @@ services:
     environment:
       - SECRET_KEY=test
       - DEBUG=True
+  worker-celery:
+    build: .
+    volumes:
+      - ./core:/app
+    command: bash -c "celery -A core worker -l INFO & celery -A core beat -l INFO"
+    depends_on:
+      - backend
+      - redis
   smtp4dev:
     image: rnwood/smtp4dev:v3
     restart: always
@@ -23,6 +38,20 @@ services:
     environment:
       - ServerOptions__Urls=http://*:80
       - ServerOptions__HostName=smtp4dev
+  master:
+    image: locustio/locust
+    ports:
+     - "8089:8089"
+    volumes:
+      - ./core/locust:/mnt/locust
+    command: -f /mnt/locust/locustfile.py --master -H http://backend:8000/
+  
+  worker:
+    image: locustio/locust
+    volumes:
+      - ./core/locust:/mnt/locust
+    command: -f /mnt/locust/locustfile.py --worker --master-host master
+
 
 volumes:
   smtp4dev-data:

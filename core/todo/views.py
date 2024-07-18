@@ -6,9 +6,12 @@ from django.views.generic import (
     CreateView,
     View,
 )
-from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import UpdateTask
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
+
+from .tasks import delete_task
+from .forms import UpdateTask
 from .models import Task
 
 
@@ -61,3 +64,8 @@ class TaskDeleteView(LoginRequiredMixin, DeleteView):
 
     def get_queryset(self):
         return self.model.objects.filter(user=self.request.user)
+
+
+def deleted_task(request):
+    delete_task.delay()
+    return HttpResponse("<h1>Delete Task successfully</h1>")
