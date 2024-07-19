@@ -33,6 +33,7 @@ drf-yasg==1.21.7
 exceptiongroup==1.2.1
 Faker==26.0.0
 flake8==7.1.0
+gunicorn==22.0.0
 idna==3.7
 importlib_metadata==8.0.0
 importlib_resources==6.4.0
