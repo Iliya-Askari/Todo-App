@@ -4,9 +4,14 @@ from django.views.generic.edit import FormView
 from django.urls import reverse_lazy
 from django.contrib.auth import login
 from django.shortcuts import redirect
+from mail_templated import EmailMessage
+from rest_framework_simplejwt.tokens import RefreshToken
+from django.template.loader import render_to_string
 
 from .forms import SignUpForm
 from django.core.mail import send_mail
+from core import settings
+from accounts.api.utils import EmailThread
 # Create your views here.
 
 
@@ -31,14 +36,19 @@ class RegisterPage(FormView):
         user = form.save()
         if user is not None:
             login(self.request, user)
-            subject = 'Welcome to Our Website'
-            message = 'Dear User,\n\nWelcome to our website. We are glad to have you with us!'
-            from_email = 'project@project-askari.ir'
-            to_email = form.cleaned_data.get('email')
-            recipient_list = [to_email]
-            send_mail(subject, message, from_email, recipient_list)
+            email = form.cleaned_data["email"]
+            token = self.get_tokens_for_user(user)
+            subject = "Account Activation"
+            message = render_to_string("email/activision_email.tpl", {"token": token})
+            recipient_list = [email]
+            email_thread = EmailThread(subject, message, recipient_list)
+            email_thread.start()
         return super(RegisterPage, self).form_valid(form)
-
+    
+    def get_tokens_for_user(self, user):
+        refresh = RefreshToken.for_user(user)
+        return str(refresh.access_token)
+    
     def get(self, *args, **kwargs):
         if self.request.user.is_authenticated:
             return redirect("todo:task_list")
